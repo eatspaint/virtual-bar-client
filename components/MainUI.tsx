@@ -11,12 +11,12 @@ const MainUI = () => {
   const [localParticipant, setLocalParticipant] = useState(null);
 
   const addParticipant = participant => {
-    console.log('Participant "%s" added', participant.identity);
+    console.log(`Participant "${participant.identity}" added`);
     setParticipants(previous => [...previous, participant]);
   };
 
   const removeParticipant = participant => {
-    console.log('Participant "%s" REMOVED', participant.identity);
+    console.log(`Participant "${participant.identity}" REMOVED`);
     setParticipants(previous =>
       previous.filter(existing => existing.identity !== participant.identity)
     );

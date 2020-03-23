@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { flexCentered } from './styles';
 import Participant from './Participant';
+import { useRouter } from 'next/router';
 
 const ConversationContainer = styled.div`
   grid-row: top / bottom;
@@ -15,12 +16,11 @@ const Conversation = ({ localParticipant, participants }) => {
   };
 
   const findGain = () => {
-    if (window) {
-      const params = new URLSearchParams(window.location.search);
+    const { query } = useRouter();
+
+    if (query?.gain) {
       // default to muting
-      return parseInt(params.get('gain'), 10) || 0;
-    } else {
-      return 0;
+      return parseInt(query.gain as string, 10) || 0;
     }
   };
 

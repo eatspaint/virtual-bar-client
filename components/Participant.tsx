@@ -4,22 +4,24 @@ const Participant = ({ gain, participant, isYou }) => {
   const [videoRef] = useState(createRef<HTMLVideoElement>());
 
   const playTrack = track => {
-    if (track.kind === 'audio') {
-      if (!isYou) {
-        // Don't play your own audio
-        var audio = new Audio();
-        audio.srcObject = postProcessAudioTrack(track);
-      }
-    } else if (track.kind === 'video') {
-      taggedLog('Creating new MediaStream');
-      taggedLog('track:', track);
-      const mediaStreamTrack = track.mediaStreamTrack;
-      const stream = new MediaStream();
-      stream.addTrack(mediaStreamTrack);
-      // @ts-ignore
-      videoRef.current.srcObject = stream;
-    } else {
-      taggedLog('non-audio or video track:', track);
+    switch (track.kind) {
+      case 'audio':
+        if (!isYou) {
+          // Don't play your own audio
+          var audio = new Audio();
+          audio.srcObject = postProcessAudioTrack(track);
+        }
+        break;
+      case 'video':
+        taggedLog('Creating new MediaStream');
+        taggedLog('track:', track);
+        const { mediaStreamTrack } = track;
+        const stream = new MediaStream();
+        stream.addTrack(mediaStreamTrack);
+        videoRef.current!.srcObject = stream;
+        break;
+      default:
+        taggedLog('non-audio or video track:', track);
     }
   };
 

@@ -8,20 +8,18 @@ const getRandomIntInclusive = (min, max) => {
 };
 
 const generateToken = () => {
-  const twilioAccountSid = process.env.TWILIO_SID;
-  const twilioApiKey = process.env.TWILIO_API_KEY;
-  const twilioApiSecret = process.env.TWILIO_API_SECRET;
+  const { twilio_sid, twilio_api_key, twilio_api_secret } = process.env;
   const token = new jwt.AccessToken(
-    twilioAccountSid,
-    twilioApiKey,
-    twilioApiSecret
+    twilio_sid,
+    twilio_api_key,
+    twilio_api_secret
   );
   // @ts-ignore
   token.identity = `somebody-${getRandomIntInclusive(1, 100)}`;
   const videoGrant = new jwt.AccessToken.VideoGrant();
   token.addGrant(videoGrant);
   return token.toJwt();
-}
+};
 
 const connectToRoom = ({ token, roomName }) => {
   return connect(token, { name: roomName });
