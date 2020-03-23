@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from "styled-components";
+import styled from 'styled-components';
 import { Layout } from './styles';
 import { Conversation, Me, Settings } from './';
 
@@ -12,10 +12,13 @@ const FocusContainer = styled.div`
   grid-template-rows: [top] 75px [focus-top] 1fr [focus-bottom] 75px [bottom];
 `;
 
-const Focus = () => {
+const Focus = ({ localParticipant, participants }) => {
   return (
     <FocusContainer>
-      <Conversation />
+      <Conversation
+        localParticipant={localParticipant}
+        participants={participants}
+      />
       <Settings />
       <Me />
     </FocusContainer>
