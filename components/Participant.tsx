@@ -26,11 +26,9 @@ const Participant = ({ gain, participant, isYou }) => {
   };
 
   useEffect(() => {
-    participant.tracks.forEach(publication => {
-      // sometimes it passes `null` (?!), so check if it's real
-      if (publication.track) {
-        playTrack(publication.track);
-      }
+    participant.tracks.forEach(({ track }) => {
+      // sometimes track is `null` (?!), so check if it's real
+      track && playTrack(track);
     });
 
     participant.on('trackSubscribed', track => {
