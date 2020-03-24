@@ -11,13 +11,13 @@ const ConversationContainer = styled.div`
 `;
 
 const Conversation = ({ localParticipant, participants }) => {
+  const { query } = useRouter();
+
   const isYou = participant => {
     return localParticipant.identity === participant.identity;
   };
 
   const findGain = () => {
-    const { query } = useRouter();
-
     if (query?.gain) {
       // default to muting
       return parseInt(query.gain as string, 10) || 0;
