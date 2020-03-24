@@ -21,6 +21,8 @@ const Conversation = ({ localParticipant, participants }) => {
     if (query?.gain) {
       // default to muting
       return parseInt(query.gain as string, 10) || 0;
+    } else {
+      return 0;
     }
   };
 
