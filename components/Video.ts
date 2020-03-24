@@ -22,7 +22,11 @@ const generateToken = () => {
 };
 
 const connectToRoom = ({ token, roomName }) => {
-  return connect(token, { name: roomName });
+  return connect(token, {
+    name: roomName,
+    region: 'gll',
+    preferredVideoCodecs: [{ codec: 'VP8', simulcast: false }]
+  });
 };
 
 export default { connectToRoom, generateToken };
