@@ -2,6 +2,10 @@ import React, { createRef, useEffect, useState } from 'react';
 
 const Participant = ({ gain, participant, isYou }) => {
   const [videoRef] = useState(createRef<HTMLVideoElement>());
+  const [audioCtx] = useState(
+    // @ts-ignore
+    new (window.AudioContext || window.webkitAudioContext)()
+  );
 
   const playTrack = track => {
     switch (track.kind) {
@@ -37,13 +41,14 @@ const Participant = ({ gain, participant, isYou }) => {
     };
 
     participant.on('trackSubscribed', onTrackSubscribed);
-    return () => participant.off('trackSubscribed', onTrackSubscribed);
+    return () => {
+      audioCtx.close();
+      participant.off('trackSubscribed', onTrackSubscribed);
+    };
   }, [participant, videoRef.current]);
 
   const postProcessAudioTrack = audioTrack => {
     // Manually add the stream so that we can post-process the audio
-    // @ts-ignore
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     const stream = new MediaStream();
     stream.addTrack(audioTrack.mediaStreamTrack);
     const source = audioCtx.createMediaStreamSource(stream);
