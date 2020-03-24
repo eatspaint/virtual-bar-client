@@ -30,14 +30,8 @@ const MainUI = () => {
       ...Array.from(room.participants.values()),
       room.localParticipant
     ].forEach(participant => addParticipant(participant));
-    room.on('participantConnected', participant => {
-      console.log(`Participant connected: ${participant.identity}`);
-      addParticipant(participant);
-    });
-    room.on('participantDisconnected', participant => {
-      console.log(`Participant DISconnected: ${participant.identity}`);
-      removeParticipant(participant);
-    });
+    room.on('participantConnected', addParticipant);
+    room.on('participantDisconnected', removeParticipant);
   };
 
   useEffect(() => {
@@ -48,13 +42,18 @@ const MainUI = () => {
           .then(room => prepareRoom(room))
           .catch(err => console.log(err));
       });
-    return () => room && room.disconnect();
+    return () => {
+      if (room) {
+        room.off('participantConnected', addParticipant);
+        room.off('participantDisconnected', removeParticipant);
+        room.disconnect();
+      }
+    };
   }, []);
 
   return (
     <LayoutContainer>
-      <Focus participants={participants} localParticipant={localParticipant}
-      />
+      <Focus participants={participants} localParticipant={localParticipant} />
       <Bar />
       <Performer />
     </LayoutContainer>

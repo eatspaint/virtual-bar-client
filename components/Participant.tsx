@@ -31,10 +31,13 @@ const Participant = ({ gain, participant, isYou }) => {
       track && playTrack(track);
     });
 
-    participant.on('trackSubscribed', track => {
+    const onTrackSubscribed = track => {
       taggedLog(`trackSubscribed (${track.kind})`, track);
       playTrack(track);
-    });
+    };
+
+    participant.on('trackSubscribed', onTrackSubscribed);
+    return () => participant.off('trackSubscribed', onTrackSubscribed);
   }, [participant, videoRef.current]);
 
   const postProcessAudioTrack = audioTrack => {
