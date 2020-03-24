@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import MainUI from '../components/MainUI';
-import { Reset } from 'styled-reset'
+import { Reset } from 'styled-reset';
 
 const Home = () => (
   <>
